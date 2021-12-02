@@ -1,0 +1,266 @@
+---
+title: "Predicting amino acid properties using regression"
+author: "Nathan Brouwer"
+date: "11/30/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Key vocab
+
+* proteinogenic amino acids
+* regression model / line of best fit
+* pI
+* confidence intervals (CI)
+* confidence ellipse 
+* correlation coefficient
+* Selenocysteine and Pyrrolysine
+* re-coding stop codons
+* y = m*x + b
+* slope
+* intercept
+
+## Key functions / packages
+
+* ggpubr
+* pander
+* lm()
+* coef()
+* cor()
+* round()
+
+
+
+## Predict pI for an Selenocysteine and Pyrrolysine
+
+Amino acids can be described by a number of chemical properties.  This information is fairly easy to locate for the 20 standard **proteinogenic amino acids** coded by the standard codon table.  For other amino acids it can be very difficult to find this information. 
+
+A key question in the study of the origin of the universal genetic code is: of the hundreds of amino acids that occur on earth, why does the codon table code for the 20 that it does?  That is, why isn't life based on a different set of 20 amino acids?  
+
+Many studies compare and contrast the chemical properties of the 20 proteinogenic amino acids with other amino acids, such as the amino acids that occur meteorites.  Unfortunately, these studies rarely publish their data.  Moreover, it seems like there is not always experimentally derived data on the chemical properties of non-proteinogenic amino acids.  Authors' therefore use chemistry modeling software to predict the chemical attributes non-standard amino acids.
+
+In this portfolio assignment you will build a simple **regression model** (**line of best fit**) using the lm() function, then use the molecular weight of non-standard amino acids to predict other chemical values.
+
+You'll then assess whether this model is likely to be a very good one for predicting pI.
+
+The assignment consists only of instructions - no code!  To complete this assignment, you will need to gather the necessary data and code from recent assignments to make a self-sufficient script to carry out the following analysis.
+
+### Step 0: Load the necessary packages
+
+```{r}
+# packages 
+
+```
+
+
+### Step 1: Make a dataframe 
+
+First, we need a dataframe to hold data on the 20 proteinogenic amino acids.  Make a dataframe with the following columns:
+
+1. amino acid codes
+1. molecular weight 
+1. pI (the vector is not called this though in my code code - make sure you set up your code properly)
+
+Call the dataframe habk.df2.
+
+```{r}
+# vectors
+
+
+
+# make dataframe
+
+
+```
+
+Display the finished dataframe with pander::pander()
+
+```{r}
+# show table with pander
+
+
+
+```
+
+
+### Step 2: Plot pI versus molecular weight
+
+Use ggpubr to make a plot of the pH at the isoelectric point (pI) versus molecular mass.  
+
+1. Plot pI on one axis and molecular weight on the other. 
+1. Include regression  line (line of best fit)
+1. Include other information, including a confidence intervals (CI), confidence ellipse, and the correlation coefficient
+1. Have each point labeled with the 1-letter amino acid code.
+1. Include relevant x-axis and y-axis labels and a title.
+
+```{r}
+# make plot
+
+
+
+```
+
+
+### Step 3: Determine MW for Selenocysteine and Pyrrolysine 
+
+Look up the molecular mass of the non-standard amino acids Selenocysteine and Pyrrolysine from https://en.wikipedia.org/wiki/Amino_acid
+ 
+Place this information in objects called selenocysteine.MW and pyrrolysine.MW
+
+```{r}
+# molecular weights
+
+
+
+```
+
+
+Selenocysteine and Pyrrolysine are amino acids that can be added to proteins by re-coding stop codons.  (On an exam you should recognize these as amino acids that occur in proteins via this mechanism and be able to answer simple multiple choice questions about them.)
+
+For more information see: 
+
+Scitable: 
+https://www.nature.com/scitable/topicpage/an-evolutionary-perspective-on-amino-acids-14568445/
+
+Wikipedia:
+https://en.wikipedia.org/wiki/Selenocysteine
+https://en.wikipedia.org/wiki/Pyrrolysine
+
+### Step 4: Estimate pI for Selenocysteine (U) and Pyrrolysine (O)
+
+Build a regression model using lm() to determine the y = m*x + b equation for the line in your scatterplot.
+
+A simple regression model has a slope (m) and an intercept and can be set up as an equation
+
+y = m*x + b
+
+In this situation the model would be
+
+pI = m*MW.da + b
+
+"b" is called the "intercept" in R output.  
+
+When you build a regression model you can access output that looks like this:
+(Intercept)       MW.da 
+ 2.30536091  1.01131509 
+
+Which is interpreted as
+
+(Intercept)       MW.da 
+    b              m 
+
+
+If the numbers above were accurate (they aren't), then our equation would be
+pI = 1.01131509*MW.da + 2.30536091
+
+
+First, build the regression model (aka linear model)
+```{r}
+# Build model
+
+
+```
+
+Next get the coefficients for the model (the m of m*x, and the b).
+```{r}
+#get coefficients / parameters for equation
+
+
+```
+
+Use the equation y = m*x + b to estimate the pI of selenocystein an pyrrolysine.
+
+ 
+```{r}
+# Estimate pI for Se and Py
+
+
+
+```
+
+### Step 5: Make a table of summary information for U and O
+
+Make a table of your results, including the following columns
+
+1. amino.acid: full amino acid names for U an d O
+1. three.letter: 3-letter code for the amino acids (given on Wikipedia)
+1. one.letter: 1-letter code for the amino acids (given on Wikipedia)
+1. molecular.weight: from wikipedia
+1. pI.estimate: from your regression equation
+
+
+```{r}
+# make table
+
+
+
+```
+
+
+Display the dataframe with the function pander() from the pander package.
+
+```{r}
+# make table
+
+
+
+```
+
+
+### Step 6: Do you think your predictions of pI will be very accurate?
+
+Using R, determine the *correlation coefficient* for molecular mass versus pI.  Is this a very strong correlation coefficient?  
+
+```{r}
+# correlation coefficient
+
+
+```
+
+Build a dataframe with all 8 variables used in Higgs and Attwood Chapter 2.  Add molecular weight to this (which wasn't included in their original table).  
+
+Determine the variable which has the highest correlation with pI.
+
+
+First, make a datafrome with volume, bulk etc, along with molecular weight.
+```{r}
+# data
+
+# made dataframe
+```
+
+Then make a correlation matrix from the data.  Save it to an object called corr.mat
+
+```{r}
+# make correlation matrix
+
+
+```
+
+
+Round off the correlation matrix to 1 decimal [lace]
+```{r}
+# round off
+
+```
+
+Display the matrix with pander::pander()
+```{r}
+# display with pander()
+
+
+```
+
+Which variable has the strongest (most positive OR most negative) correlation with pI? (if possible write this with code, otherwise just state what it is).  
+
+```{r}
+# find maximum
+
+
+```
+
